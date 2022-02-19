@@ -212,7 +212,7 @@ class WatchlistGroup extends React.Component {
   }
 
   onWatchlistChange(event) {
-    const name = event.currentTarget.name;
+    const name = event.currentTarget.id;
     this.setState({ watchlistName: name });
   }
 
@@ -235,26 +235,25 @@ class WatchlistGroup extends React.Component {
               />
             </div>
           </div> */}
-          <div className="row">
-            <div className="col">
-              <Watchlist name={watchlistName} />
-            </div>
+          <div className="instruments">
+            <Watchlist name={watchlistName} />
           </div>
-          <div className="row">
-            <div className="btn-group watchlist-selector" role="group">
-              {watchlists.map((value, index) => (
-                <button
-                  type="button"
-                  onClick={this.onWatchlistChange}
-                  className="btn btn-secondary"
-                  key={value.watchlistName}
-                  name={value.watchlistName}
-                >
-                  <span>{value.watchlistName}</span>
-                </button>
-              ))}
-            </div>
-          </div>
+          <ul className="watchlist-selector list-flat">
+            {watchlists.map((value, index) => (
+              <li
+                onClick={this.onWatchlistChange}
+                className={
+                  this.state.watchlistName === value.watchlistName
+                    ? "selected"
+                    : ""
+                }
+                key={value.watchlistName}
+                id={value.watchlistName}
+              >
+                {value.watchlistName}
+              </li>
+            ))}
+          </ul>
         </div>
       );
     }

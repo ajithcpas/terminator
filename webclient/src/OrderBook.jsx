@@ -3,6 +3,7 @@ import Utils from "./utils";
 import HoverComponent from "./HoverComponent";
 import OrderWindowContext from "./OrderWindowContext";
 import { Modal } from "react-bootstrap";
+import ToastContext from "./ToastContext";
 
 class Order extends React.Component {
   constructor(props) {
@@ -45,7 +46,13 @@ class Order extends React.Component {
       .then(
         (result) => {
           console.log(result);
-          alert(JSON.stringify(result));
+          let message = result.fault.message;
+          let data = {
+            title: "Success",
+            message: message,
+            status: "success",
+          };
+          this.context(data);
         },
         (error) => {
           console.log(error);
@@ -186,21 +193,21 @@ class OrderBook extends React.Component {
 
   getOrders() {
     fetch("/api/orders")
-    .then((res) => res.json())
-    .then(
-      (result) => {
-        this.setState({
-          isLoaded: true,
-          orders: result.success,
-        });
-      },
-      (error) => {
-        this.setState({
-          isLoaded: true,
-          error,
-        });
-      }
-    );
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          this.setState({
+            isLoaded: true,
+            orders: result.success,
+          });
+        },
+        (error) => {
+          this.setState({
+            isLoaded: true,
+            error,
+          });
+        }
+      );
   }
 
   componentDidMount() {
@@ -243,5 +250,7 @@ class OrderBook extends React.Component {
     }
   }
 }
+
+OrderBook.contextType = ToastContext;
 
 export default OrderBook;

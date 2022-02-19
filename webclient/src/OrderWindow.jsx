@@ -1,6 +1,7 @@
 import React from "react";
 import Utils from "./utils";
 import Input from "./FormUtil";
+import ToastContext from "./ToastContext";
 
 class OrderWindow extends React.Component {
   constructor(props) {
@@ -60,14 +61,20 @@ class OrderWindow extends React.Component {
       .then(
         (result) => {
           console.log(result);
-          alert(JSON.stringify(result));
+          let message = result.fault.message;
+          let data = {
+            title: "Success",
+            message: message,
+            status: "success",
+          };
+          this.context(data);
         },
         (error) => {
           console.log(error);
           alert(error);
         }
       );
-//     this.handleCancel();
+    //     this.handleCancel();
   }
 
   handleCancel() {
@@ -110,7 +117,8 @@ class OrderWindow extends React.Component {
         }
         break;
       }
-      default: break;
+      default:
+        break;
     }
   }
 
@@ -291,5 +299,7 @@ class OrderWindow extends React.Component {
     );
   }
 }
+
+OrderWindow.contextType = ToastContext;
 
 export default OrderWindow;

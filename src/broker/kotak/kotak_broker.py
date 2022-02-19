@@ -9,7 +9,7 @@ from broker.base_broker import Broker
 class KotakBroker(Broker):
     def __init__(self):
         super().__init__()
-        self.kotak_api = self.init_api()
+        self.kotak_api = None
 
     def init_api(self):
         access_token = os.environ.get('KOTAK_ACCESS_TOKEN')
@@ -22,7 +22,7 @@ class KotakBroker(Broker):
 
         client.login(password=os.environ.get('KOTAK_PASSWORD'))
         client.session_2fa(access_code=os.environ.get('KOTAK_ACCESS_CODE'))
-        return client
+        self.kotak_api = client
 
     def get_available_funds(self):
         pass

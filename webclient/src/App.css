@@ -10,9 +10,12 @@
   --color-text-default: #bbb;
   --color-text-1: #666;
   --color-text-2: #616161;
+  --color-text-5: #d4603b;
   --color-text-8: #5b9a5d;
   --color-text-10: #e25f5b;
-  --color-bg-default: #1f1f1f;
+  --color-bg-body: #111;
+  --color-bg-default: #181818;
+  --color-bg-1: #131415;
   --color-bg-2: #444;
   --color-solid-white: #fff;
   --bg-input-disabled: url("data:image/svg+xml;charset=utf-8,%3Csvg width='6' height='6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 0h1L0 6V5zm1 5v1H5z' fill='%23ddd' fill-rule='evenodd'/%3E%3C/svg%3E");
@@ -20,7 +23,45 @@
 }
 body {
   color: var(--color-text-default);
-  background-color: var(--color-body-black);
+  background-color: var(--color-bg-body);
+}
+.right-nav {
+  display: inline-block;
+  font-size: 0.75rem;
+}
+.user-nav {
+  padding: 15px 10px;
+}
+.app-nav {
+  margin: 15px 0;
+  display: inline-block;
+  border-right: 1px solid var(--color-border-1);
+}
+.app-nav a {
+  padding: 0 15px;
+  font-size: 0.75rem;
+  line-height: 30px;
+  text-decoration: none;
+  color: #bbb;
+}
+.app-nav a:hover,
+.app-nav a.active {
+  color: var(--color-red-1);
+  cursor: pointer;
+}
+.app .app-header {
+  position: fixed;
+  height: 60px;
+  width: 100%;
+  box-shadow: 0 1px 5px 0 #0d0d0d;
+  background-color: var(--color-bg-default);
+  z-index: 100;
+}
+.app .app-section {
+  padding-top: 60px;
+  background-color: var(--color-bg-default);
+}
+.app .app-section .lhs {
 }
 .form-control,
 .form-control:focus {
@@ -35,10 +76,6 @@ body {
   font-weight: bolder;
   color: var(--color-red-1);
 }
-.order-window .transaction-type {
-  display: inline-block;
-  min-width: 28px;
-}
 .bg-color-blue {
   background-color: var(--color-blue-1);
   border-color: var(--color-blue-1);
@@ -51,7 +88,7 @@ body {
 }
 .order-window {
   box-shadow: 0 1px 10px 0 #0d0d0d;
-  background-color: var(--color-bg-default);
+  background-color: #1f1f1f;
   width: 550px;
   position: fixed;
   bottom: 0;
@@ -64,17 +101,19 @@ body {
 }
 .order-window .body {
   padding: 20px 20px 15px 20px;
+  font-size: 0.75rem;
 }
 .order-window .footer {
   padding: 15px 20px;
   background-color: #1c1c1c;
   border-top: 1px solid #2c2c2c;
 }
+.order-window .transaction-type {
+  display: inline-block;
+  min-width: 28px;
+}
 .form-switch .form-check-input {
   cursor: pointer;
-}
-.order-window .body {
-  font-size: 0.75rem;
 }
 .order-window .form-switch .form-check-input {
   background-color: var(--color-blue-1);
@@ -95,13 +134,13 @@ body {
   position: absolute;
   top: -10px;
   padding: 0 5px;
-  background-color: var(--color-bg-default);
+  background-color: #1f1f1f;
   z-index: 4;
 }
 .order-window .form-control {
   border: 1px solid var(--color-border-default);
   padding: 10px 15px;
-  background-color: var(--color-bg-default);
+  background-color: transparent;
 }
 .order-window .form-control:focus {
   border: 1px solid var(--color-border-2);
@@ -173,32 +212,6 @@ button:hover {
 .position-window {
   padding: 15px 30px;
 }
-.app-nav {
-  margin: 15px 0;
-  float: right;
-}
-.app-nav a {
-  padding: 0 15px;
-  font-size: 0.75rem;
-  line-height: 30px;
-  text-decoration: none;
-  color: #bbb;
-}
-.app-nav a:hover,
-.app-nav a.active {
-  color: var(--color-red-1);
-  cursor: pointer;
-}
-.app .app-header {
-  position: fixed;
-  margin: 0 auto;
-  width: 100%;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-  background-color: var(--color-body-black);
-}
-.app .app-section {
-  padding-top: 70px;
-}
 .button-outline {
   color: var(--color-text-default);
   background-color: var(--color-bg-default);
@@ -238,6 +251,9 @@ table thead {
   border-top: 1px solid var(--color-border-2);
   border-bottom: 1px solid var(--color-border-2);
 }
+.watchlist-item td {
+  padding: 13px 15px;
+}
 .watchlist-item.selected {
   background-color: var(--bs-table-hover-bg);
 }
@@ -247,6 +263,41 @@ table thead {
 .watchlist-group table tbody {
   outline: none;
 }
+.watchlist-group {
+  position: fixed;
+  left: 0;
+  height: 100%;
+  overflow-y: auto;
+  width: 32%;
+  font-size: 0.8125rem;
+  box-shadow: 0 0 5px 0 #0d0d0d;
+  background-color: var(--color-bg-default);
+}
+.watchlist-group .instruments {
+  margin-bottom: 110px;
+}
+.watchlist-group .watchlist-selector {
+  position: fixed;
+  bottom: 0;
+  width: 32%;
+  background-color: var(--color-bg-default);
+  border-top: 1px solid var(--color-border-default);
+  white-space: nowrap;
+}
+.watchlist-group .watchlist-selector li {
+  padding: 10px 15px;
+  cursor: pointer;
+  text-align: center;
+  color: var(--color-text-1);
+  display: inline-block;
+  border-right: 1px solid var(--color-border-default);
+}
+.watchlist-group .watchlist-selector li:hover,
+.watchlist-group .watchlist-selector li.selected {
+  color: var(--color-text-5);
+  background-color: var(--color-bg-1);
+}
+
 .orderbook .open-orders .actions .btn.modify {
   background-color: var(--color-blue-1);
 }
@@ -274,4 +325,20 @@ table thead {
 }
 .modal-header {
   border-bottom: 1px solid var(--color-border-1);
+}
+
+.table-dark {
+  color: var(--color-text-default);
+}
+.table > :not(caption) > * > * {
+  background-color: var(--color-bg-default);
+}
+.table-hover > tbody > tr:hover > * {
+  --bs-table-accent-bg: var(--color-bg-1);
+}
+ul.list-flat {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
 }
