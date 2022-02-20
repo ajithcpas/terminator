@@ -4,7 +4,7 @@ import os
 from flask import Blueprint
 from flask import send_from_directory
 
-from extensions import ROOT_DIR, broker
+from extensions import ROOT_DIR
 
 index_bp = Blueprint('index_bp', __name__, url_prefix='/')
 api_bp = Blueprint('api_bp', __name__, url_prefix='/api')

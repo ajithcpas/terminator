@@ -28,6 +28,12 @@ class KotakBroker(Broker):
         client.session_2fa(access_code=os.environ.get('KOTAK_ACCESS_CODE'))
         self.kotak_api = client
 
+        self.headers = {'authorization': 'Bearer ' + self.kotak_api.access_token,
+                        'userid': self.kotak_api.userid,
+                        'consumerKey': self.kotak_api.consumer_key,
+                        'sessionToken': self.kotak_api.session_token
+                        }
+
     def get_available_funds(self):
         pass
 
@@ -68,19 +74,16 @@ class KotakBroker(Broker):
         pass
 
     def get_watchlists(self):
-        url = os.environ.get('KOTAK_HOST') + '/watchlist/2.0/watchlists'
-        headers = {'authorization': 'Bearer ' + os.environ.get('KOTAK_ACCESS_TOKEN'),
-                   'userid': os.environ.get('KOTAK_USER_ID'),
-                   'consumerKey': os.environ.get('KOTAK_CONSUMER_KEY')
-                   }
-        response = requests.get(url, headers=headers)
+        url = self.kotak_api.host + '/watchlist/2.1/watchlists'
+        response = requests.get(url, headers=self.headers)
         return response.json()
 
     def get_watchlist_by_name(self, name):
-        url = os.environ.get('KOTAK_HOST') + f'/watchlist/2.0/watchlists/byName/{name}'
-        headers = {'authorization': 'Bearer ' + os.environ.get('KOTAK_ACCESS_TOKEN'),
-                   'userid': os.environ.get('KOTAK_USER_ID'),
-                   'consumerKey': os.environ.get('KOTAK_CONSUMER_KEY')
-                   }
-        response = requests.get(url, headers=headers)
+        url = self.kotak_api.host + f'/watchlist/2.1/watchlists/byName/{name}'
+        response = requests.get(url, headers=self.headers)
+        return response.json()
+
+    def get_margins(self):
+        url = self.kotak_api.host + '/margin/1.0/margin'
+        response = requests.get(url, headers=self.headers)
         return response.json()

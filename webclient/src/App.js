@@ -59,6 +59,7 @@ class App extends React.Component {
           <div className="lhs col-md-4"></div>
           <div className="rhs col-md-8 text-end">
             <div className="app-nav">
+              <NavLink to="/dashboard">Dashboard</NavLink>
               <NavLink to="/orders">Orders</NavLink>
               <NavLink to="/positions">Positions</NavLink>
             </div>
