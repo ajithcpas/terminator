@@ -5,10 +5,10 @@ from flask.cli import load_dotenv
 from waitress import serve
 
 from config import DevelopmentConfig, TestingConfig, ProductionConfig
-from extensions import ROOT_DIR
 
 
 def create_app():
+    from extensions import ROOT_DIR
     static_folder = os.path.join(ROOT_DIR, "web")
     app = Flask(__name__, static_url_path="/", static_folder=static_folder)
 

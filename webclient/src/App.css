@@ -342,3 +342,30 @@ ul.list-flat {
   padding: 0;
   overflow-x: auto;
 }
+.toast-header {
+  color: var(--color-solid-white);
+}
+.toast-body {
+  color: var(--color-text-default);
+}
+.toast.error .toast-header {
+  background-color: #e25f5b;
+}
+.toast.success .toast-header {
+  background-color: #5b9a5d;
+}
+.toast-header .btn-close {
+  position: absolute;
+  right: 30px;
+}
+.transfer-icon {
+  width: 15px;
+  margin-top: 15px;
+  margin-right: -3px;
+  margin-left: -21px;
+  cursor: pointer;
+  color: var(--color-text-default);
+}
+.transfer-icon.selected {
+  color: #0d6efd;
+}

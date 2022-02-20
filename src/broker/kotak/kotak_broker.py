@@ -10,8 +10,12 @@ class KotakBroker(Broker):
     def __init__(self):
         super().__init__()
         self.kotak_api = None
+        self.init_api()
 
     def init_api(self):
+        if self.kotak_api is not None:
+            return
+
         access_token = os.environ.get('KOTAK_ACCESS_TOKEN')
         user_id = os.environ.get('KOTAK_USER_ID')
         consumer_key = os.environ.get('KOTAK_CONSUMER_KEY')

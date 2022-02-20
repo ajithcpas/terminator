@@ -1,7 +1,8 @@
 import React from "react";
 import Utils from "./utils";
 import Input from "./FormUtil";
-import ToastContext from "./ToastContext";
+import ToastContext, { formatResponse } from "./ToastContext";
+import { BiTransferAlt } from "react-icons/bi";
 
 class OrderWindow extends React.Component {
   constructor(props) {
@@ -12,6 +13,8 @@ class OrderWindow extends React.Component {
       disablePriceInput: false,
       disableTriggerPriceInput: true,
       orderType: "LIMIT",
+      showSyncSL: false,
+      syncSL: true,
     };
 
     this.handleBuyToggleSwitch = this.handleBuyToggleSwitch.bind(this);
@@ -20,6 +23,7 @@ class OrderWindow extends React.Component {
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSyncSL = this.handleSyncSL.bind(this);
   }
 
   handleBuyToggleSwitch() {
@@ -46,6 +50,9 @@ class OrderWindow extends React.Component {
     if (data.orderType === "MARKET" || data.orderType === "LIMIT") {
       data.triggerPrice = 0;
     }
+    if (data.orderType === "SL" && this.state.syncSL) {
+      data.price = data.triggerPrice;
+    }
 
     if (this.props.value.data.orderId) {
       data.orderId = this.props.value.data.orderId;
@@ -61,12 +68,7 @@ class OrderWindow extends React.Component {
       .then(
         (result) => {
           console.log(result);
-          let message = result.fault.message;
-          let data = {
-            title: "Success",
-            message: message,
-            status: "success",
-          };
+          let data = formatResponse(result);
           this.context(data);
         },
         (error) => {
@@ -86,8 +88,12 @@ class OrderWindow extends React.Component {
     let orderType = e.currentTarget.value;
     this.setState({
       orderType: orderType,
-      disablePriceInput: orderType === "MARKET" || orderType === "SLM",
+      disablePriceInput:
+        orderType === "MARKET" ||
+        orderType === "SLM" ||
+        (orderType === "SL" && this.state.syncSL),
       disableTriggerPriceInput: orderType === "MARKET" || orderType === "LIMIT",
+      showSyncSL: orderType === "SL",
     });
   }
 
@@ -120,6 +126,11 @@ class OrderWindow extends React.Component {
       default:
         break;
     }
+  }
+
+  handleSyncSL() {
+    let syncSL = !this.state.syncSL;
+    this.setState({ syncSL: syncSL, disablePriceInput: syncSL });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -177,7 +188,7 @@ class OrderWindow extends React.Component {
         </div>
         <div className="body">
           <div className="row mb-10p">
-            <div className="col-md-4">
+            <div className="col">
               <Input
                 label="Qty."
                 type="number"
@@ -189,7 +200,7 @@ class OrderWindow extends React.Component {
               />
             </div>
 
-            <div className="col-md-4">
+            <div className="col">
               <Input
                 label="Price"
                 type="number"
@@ -202,8 +213,18 @@ class OrderWindow extends React.Component {
                 onChange={this.handleInputChange}
               />
             </div>
+            {this.state.showSyncSL ? (
+              <div
+                className={
+                  "transfer-icon " + (this.state.syncSL ? "selected" : "")
+                }
+                onClick={this.handleSyncSL}
+              >
+                <BiTransferAlt size={15} />
+              </div>
+            ) : null}
 
-            <div className="col-md-4">
+            <div className="col">
               <Input
                 label="Trigger Price"
                 type="number"
@@ -219,64 +240,65 @@ class OrderWindow extends React.Component {
           <div className="row">
             <div className="col-md-4"></div>
             <div className="col-md-4">
-              <div className="form-check form-check-inline">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="orderType"
-                  id="orderTypeMarket"
-                  value="MARKET"
-                  checked={this.state.orderType === "MARKET"}
-                  onChange={this.handleOrderTypeChange}
-                />
-                <label className="form-check-label" htmlFor="orderTypeMarket">
+              <label className="form-check-label" htmlFor="orderTypeMarket">
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="orderType"
+                    id="orderTypeMarket"
+                    value="MARKET"
+                    checked={this.state.orderType === "MARKET"}
+                    onChange={this.handleOrderTypeChange}
+                  />
                   Market
-                </label>
-              </div>
-              <div className="form-check form-check-inline">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="orderType"
-                  id="orderTypeLimit"
-                  value="LIMIT"
-                  checked={this.state.orderType === "LIMIT"}
-                  onChange={this.handleOrderTypeChange}
-                />
-                <label className="form-check-label" htmlFor="orderTypeLimit">
+                </div>
+              </label>
+
+              <label className="form-check-label" htmlFor="orderTypeLimit">
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="orderType"
+                    id="orderTypeLimit"
+                    value="LIMIT"
+                    checked={this.state.orderType === "LIMIT"}
+                    onChange={this.handleOrderTypeChange}
+                  />
                   Limit
-                </label>
-              </div>
+                </div>
+              </label>
             </div>
             <div className="col-md-4 text-end">
-              <div className="form-check form-check-inline">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="orderType"
-                  id="orderTypeSL"
-                  value="SL"
-                  checked={this.state.orderType === "SL"}
-                  onChange={this.handleOrderTypeChange}
-                />
-                <label className="form-check-label" htmlFor="orderTypeSL">
+              <label className="form-check-label" htmlFor="orderTypeSL">
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="orderType"
+                    id="orderTypeSL"
+                    value="SL"
+                    checked={this.state.orderType === "SL"}
+                    onChange={this.handleOrderTypeChange}
+                  />
                   SL
-                </label>
-              </div>
-              <div className="form-check form-check-inline">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="orderType"
-                  id="orderTypeSLM"
-                  value="SLM"
-                  checked={this.state.orderType === "SLM"}
-                  onChange={this.handleOrderTypeChange}
-                />
-                <label className="form-check-label" htmlFor="orderTypeSLM">
+                </div>
+              </label>
+              <label className="form-check-label" htmlFor="orderTypeSLM">
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="orderType"
+                    id="orderTypeSLM"
+                    value="SLM"
+                    checked={this.state.orderType === "SLM"}
+                    onChange={this.handleOrderTypeChange}
+                  />
                   SLM
-                </label>
-              </div>
+                </div>
+              </label>
             </div>
           </div>
         </div>

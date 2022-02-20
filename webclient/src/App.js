@@ -87,13 +87,12 @@ class App extends React.Component {
                       show={this.state.toast.show}
                       onClose={this.state.onToastClose}
                       bg="dark"
+                      className={this.state.toast.status}
                     >
                       <Toast.Header>
                         <strong>{this.state.toast.title}</strong>
                       </Toast.Header>
-                      <Toast.Body className="text-white">
-                        {this.state.toast.message}
-                      </Toast.Body>
+                      <Toast.Body>{this.state.toast.message}</Toast.Body>
                     </Toast>
                   </ToastContainer>
                 </div>

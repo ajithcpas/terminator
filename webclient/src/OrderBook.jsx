@@ -3,7 +3,7 @@ import Utils from "./utils";
 import HoverComponent from "./HoverComponent";
 import OrderWindowContext from "./OrderWindowContext";
 import { Modal } from "react-bootstrap";
-import ToastContext from "./ToastContext";
+import ToastContext, { formatResponse } from "./ToastContext";
 
 class Order extends React.Component {
   constructor(props) {
@@ -46,12 +46,7 @@ class Order extends React.Component {
       .then(
         (result) => {
           console.log(result);
-          let message = result.fault.message;
-          let data = {
-            title: "Success",
-            message: message,
-            status: "success",
-          };
+          let data = formatResponse(result);
           this.context(data);
         },
         (error) => {
