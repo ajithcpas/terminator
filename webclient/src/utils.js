@@ -33,10 +33,9 @@ class Utils {
     return 1;
   }
 
-  static parseFloat(num, decimal) {
+  static parseFloat(num, decimal = 2) {
     return parseFloat(parseFloat(num).toFixed(decimal));
   }
-
 }
 
 export default Utils;

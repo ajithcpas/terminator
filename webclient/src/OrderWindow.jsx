@@ -39,8 +39,8 @@ class OrderWindow extends React.Component {
       order: this.state.buyToggleSwitch ? "BUY" : "SELL",
       qty: parseInt(this.state.qty),
       orderType: this.state.orderType,
-      price: Utils.parseFloat(this.state.price, 2),
-      triggerPrice: Utils.parseFloat(this.state.triggerPrice, 2),
+      price: Utils.parseFloat(this.state.price),
+      triggerPrice: Utils.parseFloat(this.state.triggerPrice),
       instrumentToken: this.props.value.data.instrumentToken,
     };
 

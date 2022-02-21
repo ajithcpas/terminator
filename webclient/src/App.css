@@ -342,6 +342,9 @@ ul.list-flat {
   padding: 0;
   overflow-x: auto;
 }
+.toast-container {
+  position: fixed !important;
+}
 .toast-header {
   color: var(--color-solid-white);
 }

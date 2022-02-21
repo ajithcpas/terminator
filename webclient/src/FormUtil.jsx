@@ -5,10 +5,10 @@ class Input extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      minValue: Utils.parseFloat(this.props.minValue, 2),
+      minValue: Utils.parseFloat(this.props.minValue),
       value: this.props.value
-        ? Utils.parseFloat(this.props.value, 2)
-        : Utils.parseFloat(this.props.minValue, 2),
+        ? Utils.parseFloat(this.props.value)
+        : Utils.parseFloat(this.props.minValue),
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -27,11 +27,11 @@ class Input extends React.Component {
         let value = minValue;
         if (
           this.state.value &&
-          Utils.parseFloat(this.state.value, 2) >= minValue
+          Utils.parseFloat(this.state.value) >= minValue
         ) {
-          value = Utils.parseFloat(this.state.value, 2) + minValue;
+          value = Utils.parseFloat(this.state.value) + minValue;
         }
-        value = Utils.parseFloat(value, 2);
+        value = Utils.parseFloat(value);
         this.setState({ value: value });
         this.props.onChange(e.target.name, value);
         e.preventDefault();
@@ -44,11 +44,11 @@ class Input extends React.Component {
         let value = minValue;
         if (
           this.state.value &&
-          Utils.parseFloat(this.state.value, 2) > minValue
+          Utils.parseFloat(this.state.value) > minValue
         ) {
-          value = Utils.parseFloat(this.state.value, 2) - minValue;
+          value = Utils.parseFloat(this.state.value) - minValue;
         }
-        value = Utils.parseFloat(value, 2);
+        value = Utils.parseFloat(value);
         this.setState({ value: value });
         this.props.onChange(e.target.name, value);
         e.preventDefault();

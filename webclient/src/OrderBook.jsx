@@ -57,7 +57,9 @@ class Order extends React.Component {
   }
 
   render() {
-    const orders = this.props.orders;
+    const orders = this.props.orders.sort((a, b) =>
+      b.orderTimestamp.localeCompare(a.orderTimestamp)
+    );
     return (
       <div>
         <Modal

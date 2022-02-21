@@ -9,7 +9,7 @@ class Positions extends React.Component {
   render() {
     const positions = this.props.positions;
     const totalPnL = positions.reduce(
-      (prev, curr) => prev + curr.realizedPL,
+      (prev, curr) => prev + Utils.parseFloat(curr.realizedPL),
       0
     );
 
@@ -40,14 +40,14 @@ class Positions extends React.Component {
               </td>
               <td className="text-end">
                 {value.netTrdQtyLot !== 0
-                  ? value.averageStockPrice
-                  : value.buyTrdAvg}
+                  ? Utils.parseFloat(value.averageStockPrice)
+                  : Utils.parseFloat(value.buyTrdAvg)}
               </td>
               <td className="text-end">
                 <span
                   className={value.realizedPL > 0 ? "profit-text" : "loss-text"}
                 >
-                  {value.realizedPL}
+                  {Utils.parseFloat(value.realizedPL)}
                 </span>
               </td>
             </tr>
