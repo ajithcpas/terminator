@@ -133,7 +133,7 @@ class OrderWindow extends React.Component {
     this.setState({ syncSL: syncSL, disablePriceInput: syncSL });
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if (this.props.value === prevProps.value) {
       return;
     }

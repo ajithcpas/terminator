@@ -1,5 +1,5 @@
 import React from "react";
-import Utils from  "./utils";
+import Utils from "./utils";
 
 class Input extends React.Component {
   constructor(props) {
@@ -42,10 +42,7 @@ class Input extends React.Component {
         //down arrow
         let minValue = this.state.minValue;
         let value = minValue;
-        if (
-          this.state.value &&
-          Utils.parseFloat(this.state.value) > minValue
-        ) {
+        if (this.state.value && Utils.parseFloat(this.state.value) > minValue) {
           value = Utils.parseFloat(this.state.value) - minValue;
         }
         value = Utils.parseFloat(value);
@@ -54,11 +51,12 @@ class Input extends React.Component {
         e.preventDefault();
         break;
       }
-      default: break;
+      default:
+        break;
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if (this.props === prevProps) {
       return;
     }

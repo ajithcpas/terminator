@@ -105,7 +105,7 @@ class Order extends React.Component {
           <tbody>
             {orders
               .filter((order) => this.props.type.includes(order.status))
-              .map((order, index) => (
+              .map((order) => (
                 <tr key={order.orderId}>
                   <td>{order.orderTimestamp}</td>
                   <td>

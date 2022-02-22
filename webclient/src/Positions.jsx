@@ -125,7 +125,7 @@ class PositionBook extends React.Component {
 
           <div className="row todays-positions">
             <div>
-              <h5>Today's Positions ({todays_position.length})</h5>
+              <h5>Today&apos;s Positions ({todays_position.length})</h5>
             </div>
             <Positions positions={todays_position} />
           </div>

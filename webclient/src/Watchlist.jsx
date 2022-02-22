@@ -132,7 +132,7 @@ class Watchlist extends React.Component {
     this.getWatchlists();
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     if (this.props.name === prevProps.name) {
       return;
     }
@@ -239,7 +239,7 @@ class WatchlistGroup extends React.Component {
             <Watchlist name={watchlistName} />
           </div>
           <ul className="watchlist-selector list-flat">
-            {watchlists.map((value, index) => (
+            {watchlists.map((value) => (
               <li
                 onClick={this.onWatchlistChange}
                 className={

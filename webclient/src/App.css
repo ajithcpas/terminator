@@ -61,8 +61,6 @@ body {
   padding-top: 60px;
   background-color: var(--color-bg-default);
 }
-.app .app-section .lhs {
-}
 .form-control,
 .form-control:focus {
   color: var(--color-solid-white);
