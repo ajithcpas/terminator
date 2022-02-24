@@ -61,7 +61,7 @@ class Watchlist extends React.Component {
           let i = 0;
           let child = selectedElement;
           while ((child = child.previousSibling) != null) i++;
-          handleOrderWindow("B", this.state.watchlist[i], this.context);
+          handleOrderWindow("B", this.props.items[i], this.context);
         }
         break;
       }
@@ -71,7 +71,7 @@ class Watchlist extends React.Component {
           let i = 0;
           let child = selectedElement;
           while ((child = child.previousSibling) != null) i++;
-          handleOrderWindow("S", this.state.watchlist[i], this.context);
+          handleOrderWindow("S", this.props.items[i], this.context);
         }
         break;
       }

@@ -1,6 +1,5 @@
 import React from "react";
 import Order from "./Order";
-import ToastContext from "../utils/ToastContext";
 
 class OrderBook extends React.Component {
   constructor(props) {
@@ -69,7 +68,5 @@ class OrderBook extends React.Component {
     }
   }
 }
-
-OrderBook.contextType = ToastContext;
 
 export default OrderBook;

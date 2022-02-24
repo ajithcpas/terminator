@@ -23,7 +23,7 @@ class OrderWindow extends React.Component {
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSyncSL = this.handleSyncSL.bind(this);
+    this.toggleSyncSL = this.toggleSyncSL.bind(this);
   }
 
   handleBuyToggleSwitch() {
@@ -76,7 +76,7 @@ class OrderWindow extends React.Component {
           alert(error);
         }
       );
-    //     this.handleCancel();
+    // this.handleCancel();
   }
 
   handleCancel() {
@@ -126,7 +126,7 @@ class OrderWindow extends React.Component {
     }
   }
 
-  handleSyncSL() {
+  toggleSyncSL() {
     let syncSL = !this.state.syncSL;
     this.setState({ syncSL: syncSL, disablePriceInput: syncSL });
   }
@@ -139,9 +139,6 @@ class OrderWindow extends React.Component {
     let state = {
       show: this.props.value.show,
       buyToggleSwitch: this.props.value.state === "B",
-      disablePriceInput: this.state.orderType === "MARKET" || this.state.orderType === "SLM",
-      disableTriggerPriceInput:
-        this.state.orderType === "MARKET" || this.state.orderType === "LIMIT",
       minQty: this.props.value.data.minQty,
       qty: this.props.value.data.qty,
       tickSize: 0.05,
@@ -152,7 +149,10 @@ class OrderWindow extends React.Component {
     if (this.props.value.data.orderType) {
       let orderType = this.props.value.data.orderType;
       state.orderType = orderType;
-      state.disablePriceInput = orderType === "MARKET" || orderType === "SLM";
+      state.showSyncSL = orderType === "SL";
+      state.syncSL = state.price === state.triggerPrice;
+      state.disablePriceInput =
+        orderType === "MARKET" || orderType === "SLM" || (orderType === "SL" && state.syncSL);
       state.disableTriggerPriceInput = orderType === "MARKET" || orderType === "LIMIT";
     }
     this.setState(state);
@@ -210,7 +210,7 @@ class OrderWindow extends React.Component {
             {this.state.showSyncSL ? (
               <div
                 className={"transfer-icon " + (this.state.syncSL ? "selected" : "")}
-                onClick={this.handleSyncSL}>
+                onClick={this.toggleSyncSL}>
                 <BiTransferAlt size={15} />
               </div>
             ) : null}
