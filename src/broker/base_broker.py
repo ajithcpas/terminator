@@ -21,9 +21,17 @@ class Broker(metaclass=abc.ABCMeta):
         pass
 
     @abc.abstractmethod
-    def get_open_position_count(self):
+    def get_margins(self):
         pass
 
     @abc.abstractmethod
-    def get_available_funds(self):
+    def get_watchlists(self):
+        pass
+
+    @abc.abstractmethod
+    def get_orders(self):
+        pass
+
+    @abc.abstractmethod
+    def get_positions(self):
         pass

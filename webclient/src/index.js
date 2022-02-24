@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import App from "./App";
-import OrderBook from "./OrderBook";
-import Positions from "./Positions";
 import { Route, BrowserRouter, Routes, Navigate } from "react-router-dom";
+import App from "./App";
+import OrderBook from "./orders/OrderBook";
+import PositionBook from "./positions/PositionBook";
 import Dashboard from "./Dashboard";
 
 ReactDOM.render(
@@ -15,7 +15,7 @@ ReactDOM.render(
           <Route path="" element={<Navigate to="dashboard" />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="orders" element={<OrderBook />} />
-          <Route path="positions" element={<Positions />} />
+          <Route path="positions" element={<PositionBook />} />
         </Route>
       </Routes>
     </BrowserRouter>

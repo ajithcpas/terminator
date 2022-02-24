@@ -1,13 +1,13 @@
+import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap";
 import "./App.css";
-import WatchlistGroup from "./Watchlist";
 import { NavLink, Outlet } from "react-router-dom";
-import OrderWindow from "./OrderWindow";
-import React from "react";
-import OrderWindowContext from "./OrderWindowContext";
 import { ToastContainer, Toast } from "react-bootstrap";
-import ToastContext from "./ToastContext";
+import WatchlistGroup from "./watchlists/WatchlistGroup";
+import OrderWindow from "./orders/OrderWindow";
+import OrderWindowContext from "./orders/OrderWindowContext";
+import ToastContext from "./utils/ToastContext";
 
 class App extends React.Component {
   constructor(props) {
@@ -15,7 +15,7 @@ class App extends React.Component {
 
     this.state = {
       orderWindowState: {
-        show: false,
+        show: false
       },
 
       orderWindowHandler: (state, data) => {
@@ -23,32 +23,28 @@ class App extends React.Component {
           orderWindowState: {
             show: true,
             state: state,
-            data: data,
-          },
+            data: data
+          }
         });
       },
 
       user_id: "User",
 
-      toast: {
-        show: false,
-        title: "",
-        message: "",
-        status: "",
-      },
-      onToastClose: () => {
-        this.setState({ toast: { show: false } });
+      toasts: [],
+      onToastClose: (id) => {
+        const toasts = this.state.toasts.filter((toast) => toast.id !== id);
+        this.setState({ toasts: toasts });
       },
       toastHandler: (data) => {
-        this.setState({
-          toast: {
-            show: true,
-            title: data.title,
-            message: data.message,
-            status: data.status,
-          },
-        });
-      },
+        let toast = {
+          id: Date.now(),
+          title: data.title,
+          message: data.message,
+          status: data.status
+        };
+        const toasts = this.state.toasts.concat(toast);
+        this.setState({ toasts: toasts });
+      }
     };
   }
 
@@ -84,17 +80,20 @@ class App extends React.Component {
 
                   <OrderWindow value={this.state.orderWindowState} />
                   <ToastContainer className="p-3" position="bottom-end">
-                    <Toast
-                      show={this.state.toast.show}
-                      onClose={this.state.onToastClose}
-                      bg="dark"
-                      className={this.state.toast.status}
-                    >
-                      <Toast.Header>
-                        <strong>{this.state.toast.title}</strong>
-                      </Toast.Header>
-                      <Toast.Body>{this.state.toast.message}</Toast.Body>
-                    </Toast>
+                    {this.state.toasts.map((toast) => (
+                      <Toast
+                        onClose={() => this.state.onToastClose(toast.id)}
+                        bg="dark"
+                        className={toast.status}
+                        key={toast.id}
+                        delay={10000}
+                        autohide>
+                        <Toast.Header>
+                          <strong>{toast.title}</strong>
+                        </Toast.Header>
+                        <Toast.Body>{toast.message}</Toast.Body>
+                      </Toast>
+                    ))}
                   </ToastContainer>
                 </div>
               </div>

@@ -1,7 +1,7 @@
 import React from "react";
 
 const OrderWindowContext = React.createContext({
-  orderWindowHandler: () => {},
+  orderWindowHandler: () => {}
 });
 
 export default OrderWindowContext;

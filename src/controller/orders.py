@@ -1,5 +1,4 @@
 import logging
-from datetime import datetime
 
 from flask import request
 
@@ -11,12 +10,7 @@ logger = logging.getLogger(__name__)
 
 @api_bp.route("/orders", methods=["GET"])
 def order_report():
-    orders = broker.kotak_api.order_report()
-    for order in orders["success"]:
-        from_datetime = datetime.strptime(order["orderTimestamp"], "%b %d %Y %I:%M:%S:%f%p")
-        to_datetime = from_datetime.strftime("%H:%M:%S")
-        order["orderTimestamp"] = to_datetime
-    return orders
+    return broker.get_orders()
 
 
 @api_bp.route("/place_order", methods=["POST"])

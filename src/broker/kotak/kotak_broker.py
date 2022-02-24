@@ -1,4 +1,6 @@
 import os
+import time
+from datetime import datetime
 
 import requests
 from ks_api_client import ks_api, ApiException
@@ -34,9 +36,6 @@ class KotakBroker(Broker):
                         'sessionToken': self.kotak_api.session_token
                         }
 
-    def get_available_funds(self):
-        pass
-
     def place_order(self, order):
         try:
             response = self.kotak_api.place_order(order_type="N", instrument_token=order["instrumentToken"],
@@ -70,20 +69,34 @@ class KotakBroker(Broker):
             self.logger.error(apiEx)
             return apiEx.body
 
-    def get_open_position_count(self):
-        pass
-
     def get_watchlists(self):
         url = self.kotak_api.host + '/watchlist/2.1/watchlists'
-        response = requests.get(url, headers=self.headers)
-        return response.json()
+        watchlists = requests.get(url, headers=self.headers).json()
+        time.sleep(1)
+        if "Success" in watchlists:
+            for watchlist in watchlists["Success"]:
+                url = self.kotak_api.host + f'/watchlist/2.1/watchlists/byID/{watchlist["watchlistId"]}'
+                watchlist_items = requests.get(url, headers=self.headers).json()
+                time.sleep(1)
+                if "Success" in watchlist_items:
+                    watchlist["watchlistItems"] = watchlist_items["Success"]
 
-    def get_watchlist_by_name(self, name):
-        url = self.kotak_api.host + f'/watchlist/2.1/watchlists/byName/{name}'
-        response = requests.get(url, headers=self.headers)
-        return response.json()
+        return watchlists
 
     def get_margins(self):
         url = self.kotak_api.host + '/margin/1.0/margin'
         response = requests.get(url, headers=self.headers)
         return response.json()
+
+    def get_orders(self):
+        orders = self.kotak_api.order_report()
+        for order in orders["success"]:
+            from_datetime = datetime.strptime(order["orderTimestamp"], "%b %d %Y %I:%M:%S:%f%p")
+            to_datetime = from_datetime.strftime("%H:%M:%S")
+            order["orderTimestamp"] = to_datetime
+        return orders
+
+    def get_positions(self):
+        open_positions = self.kotak_api.positions("OPEN")
+        today_positions = self.kotak_api.positions("TODAYS")
+        return {"open": open_positions["Success"], "todays": today_positions["Success"]}

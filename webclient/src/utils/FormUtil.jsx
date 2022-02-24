@@ -8,7 +8,7 @@ class Input extends React.Component {
       minValue: Utils.parseFloat(this.props.minValue),
       value: this.props.value
         ? Utils.parseFloat(this.props.value)
-        : Utils.parseFloat(this.props.minValue),
+        : Utils.parseFloat(this.props.minValue)
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -25,10 +25,7 @@ class Input extends React.Component {
         //up arrow
         let minValue = this.state.minValue;
         let value = minValue;
-        if (
-          this.state.value &&
-          Utils.parseFloat(this.state.value) >= minValue
-        ) {
+        if (this.state.value && Utils.parseFloat(this.state.value) >= minValue) {
           value = Utils.parseFloat(this.state.value) + minValue;
         }
         value = Utils.parseFloat(value);

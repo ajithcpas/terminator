@@ -1,15 +1,15 @@
 import React from "react";
-import Utils from "./utils";
-import HoverComponent from "./HoverComponent";
-import OrderWindowContext from "./OrderWindowContext";
 import { Modal } from "react-bootstrap";
-import ToastContext, { formatResponse } from "./ToastContext";
+import Utils from "../utils/utils";
+import HoverComponent from "../utils/HoverComponent";
+import OrderWindowContext from "./OrderWindowContext";
+import { formatResponse } from "../utils/ToastContext";
 
 class Order extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showCancelOrderModal: false,
+      showCancelOrderModal: false
     };
   }
 
@@ -40,7 +40,7 @@ class Order extends React.Component {
     fetch("/api/cancel_order", {
       method: "POST",
       body: JSON.stringify(order),
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json" }
     })
       .then((res) => res.json())
       .then(
@@ -64,16 +64,14 @@ class Order extends React.Component {
       <div>
         <Modal
           show={this.state.showCancelOrderModal}
-          onHide={() => this.setShowCancelOrderModal(false)}
-        >
+          onHide={() => this.setShowCancelOrderModal(false)}>
           <Modal.Header closeButton>
             <Modal.Title>Confirm Cancel Order</Modal.Title>
           </Modal.Header>
           <Modal.Footer>
             <button
               className="btn button-outline"
-              onClick={() => this.setShowCancelOrderModal(false)}
-            >
+              onClick={() => this.setShowCancelOrderModal(false)}>
               No
             </button>
             <button
@@ -81,8 +79,7 @@ class Order extends React.Component {
               onClick={() => {
                 this.setShowCancelOrderModal(false);
                 this.handleCancelOrder();
-              }}
-            >
+              }}>
               Yes
             </button>
           </Modal.Footer>
@@ -111,10 +108,8 @@ class Order extends React.Component {
                   <td>
                     <span
                       className={
-                        "text-label small " +
-                        (order.transactionType === "BUY" ? "blue" : "red")
-                      }
-                    >
+                        "text-label small " + (order.transactionType === "BUY" ? "blue" : "red")
+                      }>
                       {order.transactionType}
                     </span>
                   </td>
@@ -127,13 +122,7 @@ class Order extends React.Component {
                             {(orderWindowHandler) => (
                               <button
                                 className="btn modify"
-                                onClick={() =>
-                                  this.handleModifyOrder(
-                                    order,
-                                    orderWindowHandler
-                                  )
-                                }
-                              >
+                                onClick={() => this.handleModifyOrder(order, orderWindowHandler)}>
                                 M
                               </button>
                             )}
@@ -141,9 +130,7 @@ class Order extends React.Component {
                           <button
                             type="button"
                             className="btn cancel"
-                            onClick={() =>
-                              this.setShowCancelOrderModal(true, order)
-                            }
+                            onClick={() => this.setShowCancelOrderModal(true, order)}
                             // onClick={() => this.handleCancelOrder(order)}
                           >
                             C
@@ -161,11 +148,7 @@ class Order extends React.Component {
                   </td>
                   <td>
                     <span
-                      className={
-                        "text-label small " +
-                        (order.status === "TRAD" ? "green" : "")
-                      }
-                    >
+                      className={"text-label small " + (order.status === "TRAD" ? "green" : "")}>
                       {order.status}
                     </span>
                   </td>
@@ -178,76 +161,4 @@ class Order extends React.Component {
   }
 }
 
-class OrderBook extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      error: null,
-      isLoaded: false,
-      orders: [],
-    };
-  }
-
-  getOrders() {
-    fetch("/api/orders")
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          this.setState({
-            isLoaded: true,
-            orders: result.success,
-          });
-        },
-        (error) => {
-          this.setState({
-            isLoaded: true,
-            error,
-          });
-        }
-      );
-  }
-
-  componentDidMount() {
-    this.getOrders();
-  }
-
-  render() {
-    const { error, isLoaded, orders } = this.state;
-    if (error) {
-      return <div>Error: {error.message}</div>;
-    } else if (!isLoaded) {
-      return <div>Loading...</div>;
-    } else {
-      let open_order_count = 0,
-        exe_order_count = 0;
-      open_order_count = orders.filter(
-        (order) => order.status === "OPN" || order.status === "SLO"
-      ).length;
-      exe_order_count = orders.filter((order) =>
-        "TRAD,CAN".includes(order.status)
-      ).length;
-
-      return (
-        <div className="orderbook">
-          <div className="row open-orders">
-            <div>
-              <h5>Open Orders ({open_order_count})</h5>
-            </div>
-            <Order orders={orders} type="OPN,SLO" />
-          </div>
-
-          <div className="row executed-orders">
-            <div>
-              <h5>Executed Orders ({exe_order_count})</h5>
-            </div>
-            <Order orders={orders} type="TRAD,CAN" />
-          </div>
-        </div>
-      );
-    }
-  }
-}
-
-OrderBook.contextType = ToastContext;
-
-export default OrderBook;
+export default Order;

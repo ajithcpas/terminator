@@ -6,7 +6,7 @@ class Dashboard extends React.Component {
     this.state = {
       totalMargin: 0,
       marginAvailable: 0,
-      marginUtilised: 0,
+      marginUtilised: 0
     };
   }
 
@@ -16,21 +16,19 @@ class Dashboard extends React.Component {
       .then(
         (result) => {
           let totalMargin = result.Success.derivatives[0].options.totalMargin;
-          let marginAvailable =
-            result.Success.derivatives[0].options.marginAvailable;
-          let marginUtilised =
-            result.Success.derivatives[0].options.marginUtilised;
+          let marginAvailable = result.Success.derivatives[0].options.marginAvailable;
+          let marginUtilised = result.Success.derivatives[0].options.marginUtilised;
           this.setState({
             isLoaded: true,
             totalMargin: totalMargin,
             marginAvailable: marginAvailable,
-            marginUtilised: marginUtilised,
+            marginUtilised: marginUtilised
           });
         },
         (error) => {
           this.setState({
             isLoaded: true,
-            error,
+            error
           });
         }
       );

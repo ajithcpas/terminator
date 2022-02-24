@@ -1,7 +1,7 @@
 import React from "react";
-import Utils from "./utils";
-import Input from "./FormUtil";
-import ToastContext, { formatResponse } from "./ToastContext";
+import Utils from "../utils/utils";
+import Input from "../utils/FormUtil";
+import ToastContext, { formatResponse } from "../utils/ToastContext";
 import { BiTransferAlt } from "react-icons/bi";
 
 class OrderWindow extends React.Component {
@@ -14,7 +14,7 @@ class OrderWindow extends React.Component {
       disableTriggerPriceInput: true,
       orderType: "LIMIT",
       showSyncSL: false,
-      syncSL: true,
+      syncSL: true
     };
 
     this.handleBuyToggleSwitch = this.handleBuyToggleSwitch.bind(this);
@@ -41,7 +41,7 @@ class OrderWindow extends React.Component {
       orderType: this.state.orderType,
       price: Utils.parseFloat(this.state.price),
       triggerPrice: Utils.parseFloat(this.state.triggerPrice),
-      instrumentToken: this.props.value.data.instrumentToken,
+      instrumentToken: this.props.value.data.instrumentToken
     };
 
     if (data.orderType === "MARKET" || data.orderType === "SLM") {
@@ -62,7 +62,7 @@ class OrderWindow extends React.Component {
     fetch("/api/place_order", {
       method: "POST",
       body: JSON.stringify(data),
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json" }
     })
       .then((res) => res.json())
       .then(
@@ -89,11 +89,9 @@ class OrderWindow extends React.Component {
     this.setState({
       orderType: orderType,
       disablePriceInput:
-        orderType === "MARKET" ||
-        orderType === "SLM" ||
-        (orderType === "SL" && this.state.syncSL),
+        orderType === "MARKET" || orderType === "SLM" || (orderType === "SL" && this.state.syncSL),
       disableTriggerPriceInput: orderType === "MARKET" || orderType === "LIMIT",
-      showSyncSL: orderType === "SL",
+      showSyncSL: orderType === "SL"
     });
   }
 
@@ -141,23 +139,21 @@ class OrderWindow extends React.Component {
     let state = {
       show: this.props.value.show,
       buyToggleSwitch: this.props.value.state === "B",
-      disablePriceInput:
-        this.state.orderType === "MARKET" || this.state.orderType === "SLM",
+      disablePriceInput: this.state.orderType === "MARKET" || this.state.orderType === "SLM",
       disableTriggerPriceInput:
         this.state.orderType === "MARKET" || this.state.orderType === "LIMIT",
       minQty: this.props.value.data.minQty,
       qty: this.props.value.data.qty,
       tickSize: 0.05,
       price: this.props.value.data.price,
-      triggerPrice: this.props.value.data.triggerPrice,
+      triggerPrice: this.props.value.data.triggerPrice
     };
 
     if (this.props.value.data.orderType) {
       let orderType = this.props.value.data.orderType;
       state.orderType = orderType;
       state.disablePriceInput = orderType === "MARKET" || orderType === "SLM";
-      state.disableTriggerPriceInput =
-        orderType === "MARKET" || orderType === "LIMIT";
+      state.disableTriggerPriceInput = orderType === "MARKET" || orderType === "LIMIT";
     }
     this.setState(state);
     document.addEventListener("keydown", this.handleKeyDown);
@@ -172,9 +168,7 @@ class OrderWindow extends React.Component {
     return (
       <div className="order-window">
         <div className="header">
-          <span className="transaction-type">
-            {buyToggleSwitch ? "Buy" : "Sell"}&nbsp;
-          </span>
+          <span className="transaction-type">{buyToggleSwitch ? "Buy" : "Sell"}&nbsp;</span>
           <span>{Utils.getInstrumentName(this.props.value.data)}</span>
           <div className="form-check form-switch float-end">
             <input
@@ -215,11 +209,8 @@ class OrderWindow extends React.Component {
             </div>
             {this.state.showSyncSL ? (
               <div
-                className={
-                  "transfer-icon " + (this.state.syncSL ? "selected" : "")
-                }
-                onClick={this.handleSyncSL}
-              >
+                className={"transfer-icon " + (this.state.syncSL ? "selected" : "")}
+                onClick={this.handleSyncSL}>
                 <BiTransferAlt size={15} />
               </div>
             ) : null}
@@ -305,11 +296,8 @@ class OrderWindow extends React.Component {
         <div className="footer">
           <div className="text-end">
             <button
-              className={
-                "btn " + (buyToggleSwitch ? "bg-color-blue" : "bg-color-red")
-              }
-              onClick={this.handleSubmit}
-            >
+              className={"btn " + (buyToggleSwitch ? "bg-color-blue" : "bg-color-red")}
+              onClick={this.handleSubmit}>
               {buyToggleSwitch ? "Buy" : "Sell"}
             </button>
             <button className="btn button-outline" onClick={this.handleCancel}>
