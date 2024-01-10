@@ -52,7 +52,9 @@ class Positions extends React.Component {
               Total
             </td>
             <td className="text-end">
-              <span className={totalPnL > 0 ? "profit-text" : "loss-text"}>{totalPnL}</span>
+              <span className={totalPnL > 0 ? "profit-text" : "loss-text"}>
+                {Utils.parseFloat(totalPnL)}
+              </span>
             </td>
           </tr>
         </tfoot>

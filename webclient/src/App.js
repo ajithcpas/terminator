@@ -48,6 +48,32 @@ class App extends React.Component {
     };
   }
 
+  componentDidMount() {
+    /*if (process.env.NODE_ENV == "development") {
+      var sensorEndpoint = "http://localhost:8080";
+      this.socket = io.connect(sensorEndpoint, {
+        reconnection: true,
+        transports: ["websocket"]
+      });
+    } else {
+      this.socket = io.connect({
+        reconnection: true,
+        transports: ["websocket"]
+      });
+    }
+    this.socket.on("connect", () => {
+      console.log("socket connected");
+      this.socket.emit("get data", [54261]);
+    });
+    this.socket.on("disconnect", () => {
+      console.log("socket disconnected");
+    });
+
+    this.socket.on("ticker", (message) => {
+      console.log("ticker data: ", message);
+    });*/
+  }
+
   render() {
     return (
       <div className="app container-fluid">

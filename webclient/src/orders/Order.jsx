@@ -3,7 +3,7 @@ import { Modal } from "react-bootstrap";
 import Utils from "../utils/utils";
 import HoverComponent from "../utils/HoverComponent";
 import OrderWindowContext from "./OrderWindowContext";
-import { formatResponse } from "../utils/ToastContext";
+import ToastContext, { formatResponse } from "../utils/ToastContext";
 
 class Order extends React.Component {
   constructor(props) {
@@ -160,5 +160,6 @@ class Order extends React.Component {
     );
   }
 }
+Order.contextType = ToastContext;
 
 export default Order;

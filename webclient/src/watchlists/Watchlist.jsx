@@ -14,6 +14,11 @@ function handleOrderWindow(state, item, callbackFn) {
 class Watchlist extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      error: null,
+      isLoaded: false,
+      watchlistItems: []
+    };
     this.handleClick = this.handleClick.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
   }
@@ -61,7 +66,7 @@ class Watchlist extends React.Component {
           let i = 0;
           let child = selectedElement;
           while ((child = child.previousSibling) != null) i++;
-          handleOrderWindow("B", this.props.items[i], this.context);
+          handleOrderWindow("B", this.state.watchlistItems[i], this.context);
         }
         break;
       }
@@ -71,7 +76,7 @@ class Watchlist extends React.Component {
           let i = 0;
           let child = selectedElement;
           while ((child = child.previousSibling) != null) i++;
-          handleOrderWindow("S", this.props.items[i], this.context);
+          handleOrderWindow("S", this.state.watchlistItems[i], this.context);
         }
         break;
       }
@@ -80,17 +85,53 @@ class Watchlist extends React.Component {
     }
   }
 
+  getWatchlistItems() {
+    fetch("/api/watchlists/byName?name=" + this.props.name)
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          this.setState({
+            isLoaded: true,
+            watchlistItems: result.Success
+          });
+        },
+        (error) => {
+          this.setState({
+            isLoaded: true,
+            error
+          });
+        }
+      );
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.name === prevProps.name) {
+      return;
+    }
+    this.getWatchlistItems();
+  }
+
+  componentDidMount() {
+    this.getWatchlistItems();
+  }
+
   render() {
-    const watchlistItems = this.props.items;
-    return (
-      <table className="table table-hover table-dark">
-        <tbody tabIndex="2" onKeyDown={this.handleKeyDown} autoFocus={true}>
-          {watchlistItems.map((value, index) => (
-            <WatchlistItem key={index} value={value} />
-          ))}
-        </tbody>
-      </table>
-    );
+    const { error, isLoaded, watchlistItems } = this.state;
+    if (error) {
+      return <div>Error: {error.message}</div>;
+    } else if (!isLoaded) {
+      return <div>Loading...</div>;
+    } else {
+      return (
+        <table className="table table-hover table-dark">
+          <tbody tabIndex="2" onKeyDown={this.handleKeyDown} autoFocus={true}>
+            {watchlistItems.map((value, index) => (
+              <WatchlistItem key={index} value={value} />
+            ))}
+          </tbody>
+        </table>
+      );
+    }
   }
 }
 Watchlist.contextType = OrderWindowContext;

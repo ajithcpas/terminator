@@ -8,8 +8,7 @@ class WatchlistGroup extends React.Component {
       error: null,
       isLoaded: false,
       watchlists: [],
-      watchlistName: "",
-      watchlistItems: []
+      watchlistName: ""
     };
     this.onWatchlistChange = this.onWatchlistChange.bind(this);
   }
@@ -22,8 +21,7 @@ class WatchlistGroup extends React.Component {
           this.setState({
             isLoaded: true,
             watchlists: result.Success,
-            watchlistName: result.Success[0].watchlistName,
-            watchlistItems: result.Success[0].watchlistItems
+            watchlistName: result.Success[0].watchlistName
           });
         },
         (error) => {
@@ -37,13 +35,11 @@ class WatchlistGroup extends React.Component {
 
   onWatchlistChange(event) {
     const name = event.currentTarget.id;
-    const watchlistItems = this.state.watchlists.filter((x) => x.watchlistName === name)[0]
-      .watchlistItems;
-    this.setState({ watchlistName: name, watchlistItems: watchlistItems });
+    this.setState({ watchlistName: name });
   }
 
   render() {
-    const { error, isLoaded, watchlists, watchlistName, watchlistItems } = this.state;
+    const { error, isLoaded, watchlists, watchlistName } = this.state;
     if (error) {
       return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
@@ -52,7 +48,7 @@ class WatchlistGroup extends React.Component {
       return (
         <div className="watchlist-group">
           <div className="instruments">
-            <Watchlist name={watchlistName} items={watchlistItems} />
+            <Watchlist name={watchlistName} />
           </div>
           <ul className="watchlist-selector list-flat">
             {watchlists.map((value) => (

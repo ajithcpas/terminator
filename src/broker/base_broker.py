@@ -35,3 +35,7 @@ class Broker(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def get_positions(self):
         pass
+
+    @abc.abstractmethod
+    def get_live_ticks(self, instrument_tokens):
+        pass

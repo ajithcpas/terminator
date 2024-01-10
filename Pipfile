@@ -10,6 +10,10 @@ waitress = "*"
 ks-api-client = {git = "https://github.com/osparamatrix/ks-orderapi-python.git"}
 requests = "*"
 python-dotenv = "*"
+python-socketio = {extras = ["client"], version = "*"}
+flask-socketio = "*"
+gevent = "*"
+gevent-websocket = "*"
 
 [dev-packages]
 

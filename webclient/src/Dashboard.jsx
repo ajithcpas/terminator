@@ -1,4 +1,5 @@
 import React from "react";
+import Utils from "./utils/utils";
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -39,17 +40,17 @@ class Dashboard extends React.Component {
       <div className="dashboard">
         <div className="row">
           <div className="col primary-stats">
-            <div className="value">{this.state.marginAvailable}</div>
+            <div className="value">{Utils.parseFloat(this.state.marginAvailable)}</div>
             <div className="label">Margin available</div>
           </div>
           <div className="col secondary-stats">
             <div className="block">
               <span className="label">Margins used</span>
-              <span className="value">{this.state.marginUtilised}</span>
+              <span className="value">{Utils.parseFloat(this.state.marginUtilised)}</span>
             </div>
             <div className="block">
               <span className="label">Opening balance</span>
-              <span className="value">{this.state.totalMargin}</span>
+              <span className="value">{Utils.parseFloat(this.state.totalMargin)}</span>
             </div>
           </div>
         </div>
